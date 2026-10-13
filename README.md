@@ -49,7 +49,15 @@ Before starting, open Wix, Domains, johwa.co, DNS records, and screenshot every 
    | TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:info@johwa.co; fo=1` | DMARC |
 
    Delete the Wix website records: the `A` records on `@` (185.230.63.x) and the `www` CNAME to `cdn3.wixdns.net`. Step 5 replaces them.
-3. Add the Resend records from step 2. They live on their own names (`resend._domainkey` and `send`), so they don't clash with Google's SPF or MX.
+3. Add the Resend records (johwa.co was added to Resend's "eqlbrm" team on October 13, 2026). They live on their own names, so they don't clash with Google's SPF or MX. In Cloudflare, set both CNAMEs to **DNS only** (grey cloud), not proxied.
+
+   | Type | Name | Value |
+   |---|---|---|
+   | TXT | `resend._domainkey` | `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4oS72SOHnQ4JwOJECOrUg0Vz32OWPEQXyBY+VVl801gswD3ZpvccmWxTSejzrVlEWUaHjQ0abA89tQPTkBbpwm2GmQrtckTlpN7GI81p9o3sqD1mgctQCBuhNiGfkJiunClTLHBfRU5lYdofrxpGl/WwomnR4E0VPE+IW2RsY1wIDAQAB` |
+   | CNAME | `send` | `send.forge.rmta.net` |
+   | CNAME | `rsend` | `rsend.forge.rmta.net` |
+
+   Then in Resend, Domains, johwa.co, press "I've added the records" to verify.
 4. Porkbun, johwa.co, Authoritative Nameservers: replace the two Wix nameservers with the two Cloudflare gives you.
 5. Once Cloudflare shows the domain as active: the Worker, Settings, Domains & Routes, add custom domains `www.johwa.co` and `johwa.co`. The Worker sends `johwa.co` to `www.johwa.co`.
 
