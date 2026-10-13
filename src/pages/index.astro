@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+import Hangul from '../components/Hangul.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { about, beliefs, core, hero, services } from '../content';
+import { SITE } from '../config';
+import { ridges } from '../lib/ridges';
+
+// Five ridgelines, far to near. Valleys fade toward mist, so the range reads as layers in cloud.
+const heroRidges = ridges({
+  width: 1600,
+  height: 600,
+  seed: 11,
+  top: 0.42,
+  bottom: 0.86,
+  colors: ['#D6E7E4', '#BCD7D3', '#9DC2BE', '#7AA6A1', '#55827E'],
+});
+const contactRidges = ridges({
+  width: 1600,
+  height: 320,
+  seed: 4,
+  top: 0.38,
+  bottom: 0.8,
+  colors: ['#D6E7E4', '#B4D2CE', '#8DB5B0'],
+});
+---
+
+<Base>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__sky" aria-hidden="true">
+      <Hangul vertical class="hero__hangul" />
+      <svg class="hero__ridges" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice">
+        <defs>
+          {heroRidges.map((r, i) => (
+            <linearGradient id={`hr${i}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color={r.fill} />
+              <stop offset="0.55" stop-color={r.fill} stop-opacity="0.85" />
+              <stop offset="1" stop-color="#EEF4F3" stop-opacity={i === heroRidges.length - 1 ? '1' : '0.4'} />
+            </linearGradient>
+          ))}
+        </defs>
+        {heroRidges.map((r, i) => <path class="ridge" style={`--i:${i}`} d={r.d} fill={`url(#hr${i})`} />)}
+      </svg>
+    </div>
+
+    <div class="wrap hero__content">
+      <p class="hero__kicker">{hero.kicker}</p>
+      <h1 id="hero-title" class="display hero__title">{hero.headline}</h1>
+      <a class="btn" href="#contact">{hero.cta}</a>
+    </div>
+  </section>
+
+  <section id="about" class="section about" aria-labelledby="about-title">
+    <div class="wrap about__grid">
+      <div>
+        <h2 id="about-title" class="display section__title">{about.title}</h2>
+        <p class="about__tagline">{about.tagline}</p>
+      </div>
+      <div class="about__body">
+        {about.body.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section services" aria-labelledby="services-title">
+    <div class="wrap">
+      <h2 id="services-title" class="display section__title">{services.title}</h2>
+      <div class="services__intro">
+        <p class="statement">{services.statement}</p>
+        <p>{services.body}</p>
+      </div>
+      <div class="services__lists">
+        <div>
+          <h3 class="display list-title">Industries</h3>
+          <ul class="plain-list">
+            {services.industries.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h3 class="display list-title">Expertise</h3>
+          <ul class="plain-list">
+            {services.expertise.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="beliefs" class="section beliefs" aria-labelledby="beliefs-title">
+    <div class="wrap">
+      <h2 id="beliefs-title" class="display section__title">Beliefs</h2>
+      <ol class="beliefs__list">
+        {beliefs.map((b, i) => (
+          <li class="belief">
+            <span class="belief__num" aria-hidden="true">{i + 1} /</span>
+            <h3 class="belief__title">{b.title}</h3>
+            <p class="belief__body">{b.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section id="core" class="section core" aria-labelledby="core-title">
+    <div class="wrap">
+      <h2 id="core-title" class="display section__title">Core</h2>
+      <ul class="core__grid">
+        {core.map((person) => (
+          <li class="person">
+            <div class="person__frame">
+              <img src={person.photo} alt={`Portrait of ${person.name}`} width="480" height="480" loading="lazy" decoding="async" />
+            </div>
+            <a class="person__name" href={person.linkedin} rel="noopener" target="_blank">
+              {person.name}
+              <span class="visually-hidden"> on LinkedIn</span>
+            </a>
+            <p class="person__role">{person.role}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="section contact" aria-labelledby="contact-title">
+    <div class="wrap contact__grid">
+      <div>
+        <h2 id="contact-title" class="display section__title">Contact</h2>
+        <p class="contact__email">Or email us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+      </div>
+      <ContactForm />
+    </div>
+    <svg class="contact__ridges" viewBox="0 0 1600 320" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      {contactRidges.map((r) => <path d={r.d} fill={r.fill} />)}
+    </svg>
+  </section>
+</Base>
