@@ -47,7 +47,7 @@ export const core = [
     role: 'Co-Founder, CEO', photo: '/images/tristan.webp', linkedin: 'https://www.linkedin.com/in/tristansaw/' },
   {
     name: 'Elias Donovan',
-    bio: 'An operator who embeds with leadership teams to fix how work actually gets done. A decade of turnarounds and scale-ups across SaaS, financial advisory and CPG.',
+    bio: 'An operator who embeds with leadership teams to fix how work actually gets done. Decades of turnarounds and scale-ups across SaaS, Financial Advisory, and CPG.',
     role: 'Co-Founder, COO', photo: '/images/elias.webp', linkedin: 'https://www.linkedin.com/in/elias-donovan/' },
   {
     name: 'Bryan Bradburn',
