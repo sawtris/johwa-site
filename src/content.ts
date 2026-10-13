@@ -1,4 +1,4 @@
-// Site copy. Carried over word for word from the Wix site (October 2026).
+// Site copy. Carried over word for word from the Wix site (October 2026); founder bios added October 13, 2026.
 
 export const hero = {
   kicker: 'johwa',
@@ -41,7 +41,16 @@ export const beliefs = [
 ];
 
 export const core = [
-  { name: 'Tristan Saw', role: 'Co-Founder, CEO', photo: '/images/tristan.webp', linkedin: 'https://www.linkedin.com/in/tristansaw/' },
-  { name: 'Elias Donovan', role: 'Co-Founder, COO', photo: '/images/elias.webp', linkedin: 'https://www.linkedin.com/in/elias-donovan/' },
-  { name: 'Bryan Bradburn', role: 'Co-Founder, CRO', photo: '/images/bryan.webp', linkedin: 'https://www.linkedin.com/in/bryan-bradburn/' },
+  {
+    name: 'Tristan Saw',
+    bio: 'Former global head of spa at Equinox and Chief Strategy & Systems Officer at New York Sports Clubs, with strategy roots at PwC and Razorfish. Builds the systems that let strategy survive growth.',
+    role: 'Co-Founder, CEO', photo: '/images/tristan.webp', linkedin: 'https://www.linkedin.com/in/tristansaw/' },
+  {
+    name: 'Elias Donovan',
+    bio: 'An operator who embeds with leadership teams to fix how work actually gets done. A decade of turnarounds and scale-ups across SaaS, financial advisory and CPG.',
+    role: 'Co-Founder, COO', photo: '/images/elias.webp', linkedin: 'https://www.linkedin.com/in/elias-donovan/' },
+  {
+    name: 'Bryan Bradburn',
+    bio: 'A commercial leader who has built and run B2B revenue across industrial, food and beverage, and oil and gas, turning complex products into growth.',
+    role: 'Co-Founder, CRO', photo: '/images/bryan.webp', linkedin: 'https://www.linkedin.com/in/bryan-bradburn/' },
 ];

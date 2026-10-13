@@ -509,6 +509,12 @@ p {
   margin: 6px 0 0;
   color: var(--deep);
 }
+.person__bio {
+  margin: 14px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  max-width: 32em;
+}
 
 .contact {
   position: relative;
