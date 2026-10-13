@@ -31,19 +31,34 @@ Needs Node 22.12 or newer. `npm install`, then `npm run dev`.
 3. Messages go to `hello@johwa.co` (`CONTACT_TO_EMAIL` in `wrangler.jsonc`), so that mailbox must exist.
 4. Until johwa.co is verified in Resend, set `CONTACT_FROM_EMAIL` to `johwa Website <onboarding@resend.dev>`. That sender only delivers to the email your Resend account uses.
 
-### 3. Move DNS to Cloudflare (Porkbun)
+### 3. Move DNS from Wix to Cloudflare
 
-1. Cloudflare, Add a domain, `johwa.co`, Free plan. Cloudflare copies the current DNS records.
-2. **Check the copied records before going further.** Keep every MX and TXT record (email, SPF, Google verification). Losing them breaks email.
-3. Add the Resend records from step 2.
-4. Porkbun, johwa.co, Authoritative Nameservers: replace them with the two Cloudflare gives you.
-5. Once Cloudflare shows the domain as active: the Worker, Settings, Domains & Routes, add custom domains `www.johwa.co` and `johwa.co`. Let Cloudflare replace the old Wix records for those two names. The Worker sends `johwa.co` to `www.johwa.co`.
+The domain is registered at Porkbun, but its nameservers point to Wix (`ns6.wixdns.net`, `ns7.wixdns.net`), so Wix hosts the DNS today, including the Google Workspace email records. Moving DNS to Cloudflare first means cancelling Wix later can't take email down with it.
+
+Before starting, open Wix, Domains, johwa.co, DNS records, and screenshot every record, in case there's one the public lookup below didn't show.
+
+1. Cloudflare, Add a domain, `johwa.co`, Free plan. Cloudflare scans and copies the current records.
+2. **Check the copied records against this list (as of October 13, 2026) and add anything missing.** The DKIM record is the one scans most often miss.
+
+   | Type | Name | Value | Why |
+   |---|---|---|---|
+   | MX | `@` | `smtp.google.com`, priority 1 | Google Workspace email |
+   | TXT | `@` | `v=spf1 include:_spf.google.com ~all` | SPF for Google |
+   | TXT | `@` | `google-site-verification=BcI4Su8tcZPlNwQmpUWROdkSytcCmI-g8NzdboT4Pxc` | Search Console |
+   | TXT | `google._domainkey` | `v=DKIM1; k=rsa; p=` + the full key (copy it from Google Admin, Apps, Gmail, Authenticate email, or from Wix) | DKIM for Google |
+   | TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:info@johwa.co; fo=1` | DMARC |
+
+   Delete the Wix website records: the `A` records on `@` (185.230.63.x) and the `www` CNAME to `cdn3.wixdns.net`. Step 5 replaces them.
+3. Add the Resend records from step 2. They live on their own names (`resend._domainkey` and `send`), so they don't clash with Google's SPF or MX.
+4. Porkbun, johwa.co, Authoritative Nameservers: replace the two Wix nameservers with the two Cloudflare gives you.
+5. Once Cloudflare shows the domain as active: the Worker, Settings, Domains & Routes, add custom domains `www.johwa.co` and `johwa.co`. The Worker sends `johwa.co` to `www.johwa.co`.
 
 ### 4. After launch
 
+- Send yourself an email from an outside address (a personal Gmail works) to hello@johwa.co, and reply to it, to confirm email still flows both ways.
 - Check johwa.co on a phone and send a test message through the form.
 - Google Search Console and Bing keep working (their verification tags are carried over in `src/config.ts`). Submit `https://www.johwa.co/sitemap-index.xml` in both.
-- Cancel the Wix plan only after the new site is live and the form works.
+- Cancel the Wix plan only after the new site is live, email works, and the form works.
 
 ## Design notes
 
