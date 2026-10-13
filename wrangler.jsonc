@@ -8,8 +8,8 @@
     "binding": "ASSETS",
     "html_handling": "drop-trailing-slash",
     "not_found_handling": "404-page",
-    // Only /api/* runs the Worker. Everything else is served straight from the static files.
-    "run_worker_first": ["/api/*"]
+    // Every request runs the Worker first, so it can send johwa.co to www.johwa.co. It then serves the static files.
+    "run_worker_first": true
   },
   "vars": {
     "CONTACT_TO_EMAIL": "hello@johwa.co",
