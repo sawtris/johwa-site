@@ -1,4 +1,5 @@
-// Tiny Worker. It only runs for /api/* (see wrangler.jsonc). Every other URL is served from the static site.
+// Tiny Worker. It runs first for every request (see wrangler.jsonc): it sends johwa.co to www, turns podcast
+// short links like /ep1 into episode pages, and handles /api/contact. Every other URL is served from the static site.
 
 interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
@@ -90,6 +91,13 @@ export default {
     if (url.hostname === 'johwa.co') {
       url.hostname = 'www.johwa.co';
       return Response.redirect(url.toString(), 301);
+    }
+
+    // Podcast short links said on air: /ep1 goes to /podcast/episode-1, and so on for every episode.
+    const shortLink = url.pathname.match(/^\/ep(\d+)\/?$/i);
+    if (shortLink) {
+      url.pathname = `/podcast/episode-${Number(shortLink[1])}`;
+      return Response.redirect(url.toString(), 302);
     }
 
     if (url.pathname === '/api/contact') {

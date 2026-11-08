@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import ListenLinks from '../../components/ListenLinks.astro';
+import { show, episodesNewestFirst, formatDate } from '../../podcast';
+---
+
+<Base
+  title={`${show.title} | A podcast from johwa`}
+  description={`${show.tagline} ${show.description[2]}`}
+  image={{ src: show.cover.share, width: 1200, height: 1200 }}
+>
+  <section class="podcast-hero" aria-labelledby="podcast-title">
+    <div class="wrap podcast-hero__grid">
+      <img
+        class="podcast-cover"
+        src={show.cover.src}
+        srcset={`${show.cover.srcSmall} 600w, ${show.cover.src} 1200w`}
+        sizes="(max-width: 760px) 70vw, 420px"
+        alt={show.cover.alt}
+        width="1200"
+        height="1200"
+        fetchpriority="high"
+      />
+      <div>
+        <p class="podcast-kicker">A podcast from johwa</p>
+        <h1 id="podcast-title" class="display podcast-title">{show.title}</h1>
+        <p class="podcast-tagline">{show.tagline}</p>
+        <div class="podcast-about">
+          {show.description.map((p) => <p>{p}</p>)}
+          <p class="podcast-hosts">{show.hosts}</p>
+        </div>
+        <ListenLinks />
+      </div>
+    </div>
+  </section>
+
+  <section class="section episodes" aria-labelledby="episodes-title">
+    <div class="wrap">
+      <h2 id="episodes-title" class="display section__title">Episodes</h2>
+      <ol class="episode-list" reversed>
+        {episodesNewestFirst.map((ep) => (
+          <li class="episode-card">
+            <p class="episode-meta">
+              Episode {ep.number}
+              {ep.published && <>
+                <span aria-hidden="true"> · </span>
+                <time datetime={ep.published}>{formatDate(ep.published)}</time>
+              </>}
+            </p>
+            <h3 class="episode-card__title">
+              <a href={`/podcast/${ep.slug}`}>{ep.title}</a>
+            </h3>
+            <p class="episode-card__summary">{ep.description[0]}</p>
+            <a class="episode-card__more" href={`/podcast/${ep.slug}`} aria-hidden="true" tabindex="-1">Listen and read more</a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</Base>

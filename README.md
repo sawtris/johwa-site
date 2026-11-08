@@ -4,6 +4,7 @@ Astro site (static) with a small Cloudflare Worker for the contact form. Replace
 
 ```
 src/content.ts   all site copy (edit words here)
+src/podcast.ts   podcast copy and the episode list
 src/config.ts    site facts (email, LinkedIn, search verification tags)
 src/pages/       home, privacy, 404
 src/components/  header, footer, contact form, logo mark, 조화 outlines
@@ -67,6 +68,15 @@ Before starting, open Wix, Domains, johwa.co, DNS records, and screenshot every 
 - Check johwa.co on a phone and send a test message through the form.
 - Google Search Console and Bing keep working (their verification tags are carried over in `src/config.ts`). Submit `https://www.johwa.co/sitemap-index.xml` in both.
 - Cancel the Wix plan only after the new site is live, email works, and the form works.
+
+## Podcast (Enough to be Dangerous)
+
+- **Pages:** `/podcast` lists every episode, newest first. Each episode has its own page at `/podcast/episode-N`.
+- **Short links:** `johwa.co/ep1`, `johwa.co/ep2` and so on redirect to the matching episode page (handled in `worker/index.ts`). Nothing to set up per episode.
+- **Add an episode:** in `src/podcast.ts`, copy the last entry in `episodes`, bump `number` and `slug`, and fill in the title and description.
+- **Once it's live on Buzzsprout:** set `published` to the date (YYYY-MM-DD) and paste the player link into `playerSrc`. In Buzzsprout, open the episode, Share, Embed, choose the iframe version, and copy only the address inside `src="..."`. Until then the page shows "Coming soon."
+- **Apple Podcasts and Spotify buttons:** paste the show links into `show.listen` in `src/podcast.ts`. Each button appears once its link is filled in.
+- **Cover art:** `public/images/podcast/` (1200px and 600px WebP for the page, 1200px JPEG for link previews).
 
 ## Design notes
 
