@@ -33,8 +33,8 @@ export const show = {
   },
   // Show links in each app. Leave a link empty and its button stays hidden until you add it.
   listen: {
-    apple: '',
-    spotify: '',
+    apple: 'https://podcasts.apple.com/podcast/id6832157937',
+    spotify: 'https://open.spotify.com/show/31wHVYBbLzfYYCKxqKfDf2',
   },
   // The note under each episode, pointing listeners to johwa.
   cta: {
@@ -54,8 +54,8 @@ export const episodes: Episode[] = [
       'Most people we talk to use AI like a search engine. Ask a question, get an answer, move on. So we asked ourselves a simple question: what do you actually get when you pay?',
       'We cover the hidden cost of "free," why paid plans let you dig deeper without hitting a wall, and why the best AI tool is the one you actually commit to learning. Plus, our co-host Elias explains it all with a restaurant analogy (of course he does).',
     ],
-    published: '',
-    playerSrc: '',
+    published: '2026-11-07',
+    playerSrc: 'https://www.buzzsprout.com/2664382/20090006?client_source=small_player&iframe=true',
   },
 ];
 
