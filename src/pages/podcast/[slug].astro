@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import ListenLinks from '../../components/ListenLinks.astro';
+import { show, episodes, formatDate, type Episode } from '../../podcast';
+
+export function getStaticPaths() {
+  return episodes.map((episode) => ({ params: { slug: episode.slug }, props: { episode } }));
+}
+
+const { episode } = Astro.props as { episode: Episode };
+const index = episodes.findIndex((e) => e.slug === episode.slug);
+const newer = episodes[index + 1];
+const older = episodes[index - 1];
+---
+
+<Base
+  title={`Ep. ${episode.number}: ${episode.title} | ${show.title}`}
+  description={episode.description[0]}
+  image={{ src: show.cover.share, width: 1200, height: 1200 }}
+>
+  <article class="wrap page episode" aria-labelledby="episode-title">
+    <p class="podcast-kicker">
+      <a href="/podcast">{show.title}</a>
+      <span aria-hidden="true"> · </span>
+      Episode {episode.number}
+      {episode.published && <>
+        <span aria-hidden="true"> · </span>
+        <time datetime={episode.published}>{formatDate(episode.published)}</time>
+      </>}
+    </p>
+    <h1 id="episode-title" class="episode__title">{episode.title}</h1>
+
+    <div class="episode__player">
+      {episode.playerSrc ? (
+        <iframe
+          src={episode.playerSrc}
+          title={`Audio player: ${episode.title}`}
+          loading="lazy"
+          width="100%"
+          height="200"
+          frameborder="0"
+          scrolling="no"
+        ></iframe>
+      ) : (
+        <p class="episode__soon">Coming soon to Apple Podcasts and Spotify.</p>
+      )}
+    </div>
+
+    <div class="prose episode__notes">
+      {episode.description.map((p) => <p>{p}</p>)}
+    </div>
+
+    <ListenLinks />
+
+    <aside class="episode-cta" aria-labelledby="episode-cta-title">
+      <h2 id="episode-cta-title" class="episode-cta__title">{show.cta.title}</h2>
+      <p>{show.cta.body}</p>
+      <a class="btn" href={show.cta.href}>{show.cta.button}</a>
+    </aside>
+
+    {(newer || older) && (
+      <nav class="episode-nav" aria-label="More episodes">
+        {older ? <a href={`/podcast/${older.slug}`}>Previous: Episode {older.number}</a> : <span></span>}
+        {newer ? <a href={`/podcast/${newer.slug}`}>Next: Episode {newer.number}</a> : <span></span>}
+      </nav>
+    )}
+    <p class="episode-back"><a href="/podcast">All episodes</a></p>
+  </article>
+</Base>
