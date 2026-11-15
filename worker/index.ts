@@ -31,15 +31,17 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
   }
 
   // Spam trap: bots fill in every field, people never see this one.
-  if (clean(form.get('company'), 200)) return json({ ok: true });
+  if (clean(form.get('website'), 200)) return json({ ok: true });
 
-  const firstName = oneLine(clean(form.get('first_name'), 100));
-  const lastName = oneLine(clean(form.get('last_name'), 100));
+  const name = oneLine(clean(form.get('name'), 200));
   const email = clean(form.get('email'), 254);
+  const organization = oneLine(clean(form.get('organization'), 200));
+  const role = oneLine(clean(form.get('role'), 200));
+  const topic = oneLine(clean(form.get('topic'), 200));
   const message = clean(form.get('message'), 5000);
 
-  if (!firstName || !lastName || !message) {
-    return json({ ok: false, error: 'Please fill in every field.' }, 400);
+  if (!name || !message) {
+    return json({ ok: false, error: 'Please add your name and a message.' }, 400);
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ ok: false, error: 'That email address does not look right.' }, 400);
@@ -49,12 +51,21 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
     return json({ ok: false, error: 'The form is not set up yet.' }, 500);
   }
 
-  const fullName = `${firstName} ${lastName}`;
-  const text = `New message from johwa.co\n\nName: ${fullName}\nEmail: ${email}\n\n${message}\n`;
+  // Only the lines that were filled in.
+  const details: [string, string][] = [
+    ['Name', name],
+    ['Email', email],
+    ['Company', organization],
+    ['Role', role],
+    ['Challenge', topic],
+  ].filter((pair): pair is [string, string] => Boolean(pair[1]));
+
+  const text = `New message from johwa.co\n\n${details.map(([k, v]) => `${k}: ${v}`).join('\n')}\n\n${message}\n`;
   const html =
     `<p><strong>New message from johwa.co</strong></p>` +
-    `<p>Name: ${escapeHtml(fullName)}<br>Email: ${escapeHtml(email)}</p>` +
+    `<p>${details.map(([k, v]) => `${k}: ${escapeHtml(v)}`).join('<br>')}</p>` +
     `<p style="white-space:pre-wrap">${escapeHtml(message)}</p>`;
+  const subject = organization ? `Website message from ${name} (${organization})` : `Website message from ${name}`;
 
   let response: Response;
   try {
@@ -65,7 +76,7 @@ async function handleContact(request: Request, env: Env): Promise<Response> {
         from: env.CONTACT_FROM_EMAIL,
         to: [env.CONTACT_TO_EMAIL],
         reply_to: email,
-        subject: `Website message from ${fullName}`,
+        subject,
         text,
         html,
       }),

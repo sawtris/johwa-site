@@ -8,5 +8,7 @@ export const SITE = {
   // Search engine ownership tags, carried over from the Wix site so verification survives the move.
   googleSiteVerification: 'BcI4Su8tcZPlNwQmpUWROdkSytcCmI-g8NzdboT4Pxc',
   bingSiteVerification: 'AEDC9A73F9B2788C948F029270A28A9A',
-  linkedin: 'https://www.linkedin.com/company/hellojohwa/',
+  linkedin: 'https://www.linkedin.com/company/hellojohwa/', // the company page, used in search engine data
+  // The LinkedIn link in the footer (Tristan's profile, as on the old site).
+  footerLinkedin: 'https://www.linkedin.com/in/tristansaw/',
 } as const;

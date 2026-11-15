@@ -1,0 +1,14 @@
+---
+// Green band that sends podcast listeners to the contact page.
+import { show } from '../podcast';
+---
+
+<section class="band band--green cta-band" aria-labelledby="cta-title">
+  <div class="wrap split">
+    <div class="cta-band__copy">
+      <p class="eyebrow">{show.cta.kicker}</p>
+      <h2 id="cta-title" class="display cta-band__title">{show.cta.title}</h2>
+    </div>
+    <a class="btn arrow" href={show.cta.href}>{show.cta.button}</a>
+  </div>
+</section>

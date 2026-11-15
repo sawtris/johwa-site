@@ -1,7 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ListenLinks from '../../components/ListenLinks.astro';
+import PlayIcon from '../../components/PlayIcon.astro';
+import CtaBand from '../../components/CtaBand.astro';
 import { show, episodesNewestFirst, formatDate } from '../../podcast';
+
+const [latest] = episodesNewestFirst;
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <Base
@@ -9,52 +14,69 @@ import { show, episodesNewestFirst, formatDate } from '../../podcast';
   description={`${show.tagline} ${show.description[2]}`}
   image={{ src: show.cover.share, width: 1200, height: 1200 }}
 >
-  <section class="podcast-hero" aria-labelledby="podcast-title">
-    <div class="wrap podcast-hero__grid">
+  <section class="band band--night on-dark" aria-labelledby="podcast-title">
+    <div class="wrap split">
       <img
-        class="podcast-cover"
+        class="pod-hero__cover"
         src={show.cover.src}
         srcset={`${show.cover.srcSmall} 600w, ${show.cover.src} 1200w`}
-        sizes="(max-width: 760px) 70vw, 420px"
+        sizes="(max-width: 760px) 85vw, 460px"
         alt={show.cover.alt}
         width="1200"
         height="1200"
         fetchpriority="high"
       />
-      <div>
-        <p class="podcast-kicker">A podcast from johwa</p>
-        <h1 id="podcast-title" class="display podcast-title">{show.title}</h1>
-        <p class="podcast-tagline">{show.tagline}</p>
-        <div class="podcast-about">
+      <div class="pod-hero__copy">
+        <p class="eyebrow">The listening room</p>
+        <h1 id="podcast-title" class="display pod-hero__title">{show.title}.</h1>
+        <p class="lead">{show.tagline}</p>
+        <div class="pod-hero__about">
           {show.description.map((p) => <p>{p}</p>)}
-          <p class="podcast-hosts">{show.hosts}</p>
         </div>
-        <ListenLinks />
+        <p class="pod-hero__hosts">{show.hosts}</p>
+        <div class="listen-row">
+          {latest && <a class="btn btn--yellow arrow" href={`/podcast/${latest.slug}`}>Play the latest episode</a>}
+          <ListenLinks />
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section episodes" aria-labelledby="episodes-title">
-    <div class="wrap">
-      <h2 id="episodes-title" class="display section__title">Episodes</h2>
-      <ol class="episode-list" reversed>
-        {episodesNewestFirst.map((ep) => (
-          <li class="episode-card">
-            <p class="episode-meta">
-              Episode {ep.number}
-              {ep.published && <>
-                <span aria-hidden="true"> · </span>
-                <time datetime={ep.published}>{formatDate(ep.published)}</time>
-              </>}
-            </p>
-            <h3 class="episode-card__title">
-              <a href={`/podcast/${ep.slug}`}>{ep.title}</a>
-            </h3>
-            <p class="episode-card__summary">{ep.description[0]}</p>
-            <a class="episode-card__more" href={`/podcast/${ep.slug}`} aria-hidden="true" tabindex="-1">Listen and read more</a>
-          </li>
-        ))}
-      </ol>
+  {latest && (
+    <section class="wrap latest" aria-labelledby="latest-title">
+      <p class="eyebrow">Latest episode</p>
+      <h2 id="latest-title" class="display latest__title"><a href={`/podcast/${latest.slug}`}>{latest.title}</a></h2>
+      <p class="latest__summary">{latest.description[0]}</p>
+      {latest.playerSrc ? (
+        <div class="player">
+          <iframe src={latest.playerSrc} title={`Audio player: ${latest.title}`} loading="lazy" height="200" scrolling="no"></iframe>
+        </div>
+      ) : (
+        <p class="player player--soon">Coming soon to Apple Podcasts and Spotify.</p>
+      )}
+    </section>
+  )}
+
+  <section class="wrap episodes" aria-labelledby="episodes-title">
+    <div class="episodes__head">
+      <h2 id="episodes-title" class="display episodes__title">All episodes.</h2>
     </div>
+    <ol class="episode-list" reversed>
+      {episodesNewestFirst.map((ep) => (
+        <li class="episode-row">
+          <span class="display episode-row__num" aria-hidden="true">{pad(ep.number)}</span>
+          <div class="episode-row__text">
+            <h3 class="episode-row__title"><a href={`/podcast/${ep.slug}`}>{ep.title}</a></h3>
+            <p class="episode-row__meta">
+              Episode {ep.number}
+              {ep.published && <><span aria-hidden="true"> · </span><time datetime={ep.published}>{formatDate(ep.published)}</time></>}
+            </p>
+          </div>
+          <span class="play play--dark" aria-hidden="true"><PlayIcon color="#F3EFE6" size={14} /></span>
+        </li>
+      ))}
+    </ol>
   </section>
+
+  <CtaBand />
 </Base>

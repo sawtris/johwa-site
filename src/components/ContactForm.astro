@@ -1,35 +1,50 @@
 ---
 import { SITE } from '../config';
+import { contactPage } from '../content';
 ---
 
 <form class="form" method="post" action="/api/contact" data-contact-form data-email={SITE.email}>
   <div class="form__row">
     <div class="field">
-      <label for="first_name">First Name</label>
-      <input id="first_name" name="first_name" type="text" autocomplete="given-name" required maxlength="100" />
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required maxlength="200" />
     </div>
     <div class="field">
-      <label for="last_name">Last Name</label>
-      <input id="last_name" name="last_name" type="text" autocomplete="family-name" required maxlength="100" />
+      <label for="email">Work email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" />
     </div>
   </div>
-  <div class="field">
-    <label for="email">Email</label>
-    <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" />
+  <div class="form__row">
+    <div class="field">
+      <label for="organization">Company <span class="optional">(optional)</span></label>
+      <input id="organization" name="organization" type="text" autocomplete="organization" maxlength="200" />
+    </div>
+    <div class="field">
+      <label for="role">Your role <span class="optional">(optional)</span></label>
+      <input id="role" name="role" type="text" autocomplete="organization-title" maxlength="200" />
+    </div>
   </div>
+  <fieldset class="choices">
+    <legend>What’s closest to your challenge?</legend>
+    <div class="choices__list">
+      {contactPage.topics.map((topic) => (
+        <label class="choice"><input type="radio" name="topic" value={topic} />{topic}</label>
+      ))}
+    </div>
+  </fieldset>
   <div class="field">
-    <label for="message">Message</label>
-    <textarea id="message" name="message" rows="5" required maxlength="5000"></textarea>
+    <label for="message">What needs to change?</label>
+    <textarea id="message" name="message" rows="6" required maxlength="5000"></textarea>
   </div>
 
   <!-- Spam trap. Real people never see or fill this in. -->
   <div class="form__trap" aria-hidden="true">
-    <label for="company">Company</label>
-    <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+    <label for="website">Website</label>
+    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
   </div>
 
   <div class="form__actions">
-    <button class="btn" type="submit">Send</button>
+    <button class="btn arrow" type="submit">Start a conversation</button>
     <p class="form__status" role="status" aria-live="polite" data-status></p>
   </div>
   <noscript>
@@ -45,11 +60,19 @@ import { SITE } from '../config';
     const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
     const status = form.querySelector<HTMLElement>('[data-status]')!;
     const email = form.dataset.email ?? '';
+    const label = button.textContent ?? 'Start a conversation';
 
     button.disabled = true;
     button.textContent = 'Sending...';
+    button.classList.remove('arrow');
     status.textContent = '';
     status.classList.remove('is-error');
+
+    const done = () => {
+      button.disabled = false;
+      button.textContent = label;
+      button.classList.add('arrow');
+    };
 
     try {
       const response = await fetch('/api/contact', {
@@ -60,9 +83,8 @@ import { SITE } from '../config';
       const result = await response.json().catch(() => ({}));
       if (response.ok && result.ok) {
         form.reset();
-        status.textContent = 'Thanks for submitting!';
-        button.textContent = 'Send';
-        button.disabled = false;
+        status.textContent = 'Thanks. Your message is on its way to us.';
+        done();
         return;
       }
       throw new Error(result.error || 'The message did not send.');
@@ -70,8 +92,7 @@ import { SITE } from '../config';
       const reason = error instanceof Error ? error.message : 'The message did not send.';
       status.textContent = `${reason} Try again, or email ${email} directly.`;
       status.classList.add('is-error');
-      button.disabled = false;
-      button.textContent = 'Send';
+      done();
     }
   });
 </script>

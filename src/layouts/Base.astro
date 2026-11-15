@@ -1,5 +1,4 @@
 ---
-import '@fontsource/syncopate/700.css';
 import '@fontsource-variable/figtree/index.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
@@ -46,7 +45,8 @@ const org = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
-    <meta name="theme-color" content="#EEF4F3" />
+    <meta name="theme-color" content="#F3EFE6" />
+    <link rel="preload" href="/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="google-site-verification" content={SITE.googleSiteVerification} />
     <meta name="msvalidate.01" content={SITE.bingSiteVerification} />
     <meta name="format-detection" content="telephone=no" />
