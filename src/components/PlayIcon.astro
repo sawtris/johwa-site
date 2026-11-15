@@ -1,0 +1,10 @@
+---
+// The triangle inside the round play buttons.
+interface Props {
+  color?: string;
+  size?: number;
+}
+const { color = '#141614', size = 18 } = Astro.props;
+---
+
+<svg width={size} height={Math.round(size * 1.11)} viewBox="0 0 18 20" aria-hidden="true"><path d="M3 1 L17 10 L3 19 Z" fill={color}></path></svg>

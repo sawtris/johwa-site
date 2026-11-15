@@ -1,99 +1,94 @@
 ---
 import Base from '../layouts/Base.astro';
-import Hangul from '../components/Hangul.astro';
-import ContactForm from '../components/ContactForm.astro';
-import { about, beliefs, core, hero, services } from '../content';
+import ListenLinks from '../components/ListenLinks.astro';
+import PlayIcon from '../components/PlayIcon.astro';
+import { beliefs, beliefsIntro, closing, collective, core, exhibits, hero } from '../content';
+import { show, episodesNewestFirst } from '../podcast';
 import { SITE } from '../config';
-import { ridges } from '../lib/ridges';
 
-// Five ridgelines, far to near. Valleys fade toward mist, so the range reads as layers in cloud.
-const heroRidges = ridges({
-  width: 1600,
-  height: 600,
-  seed: 11,
-  top: 0.42,
-  bottom: 0.86,
-  colors: ['#D6E7E4', '#BCD7D3', '#9DC2BE', '#7AA6A1', '#55827E'],
-});
-const contactRidges = ridges({
-  width: 1600,
-  height: 320,
-  seed: 4,
-  top: 0.38,
-  bottom: 0.8,
-  colors: ['#D6E7E4', '#B4D2CE', '#8DB5B0'],
-});
+const latest = episodesNewestFirst[0];
 ---
 
 <Base>
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__sky" aria-hidden="true">
-      <Hangul vertical class="hero__hangul" />
-      <svg class="hero__ridges" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice">
-        <defs>
-          {heroRidges.map((r, i) => (
-            <linearGradient id={`hr${i}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color={r.fill} />
-              <stop offset="0.55" stop-color={r.fill} stop-opacity="0.85" />
-              <stop offset="1" stop-color="#EEF4F3" stop-opacity={i === heroRidges.length - 1 ? '1' : '0.4'} />
-            </linearGradient>
-          ))}
-        </defs>
-        {heroRidges.map((r, i) => <path class="ridge" style={`--i:${i}`} d={r.d} fill={`url(#hr${i})`} />)}
-      </svg>
-    </div>
-
-    <div class="wrap hero__content">
-      <p class="hero__kicker">{hero.kicker}</p>
-      <h1 id="hero-title" class="display hero__title">{hero.headline}</h1>
-      <a class="btn" href="#contact">{hero.cta}</a>
-    </div>
-  </section>
-
-  <section id="about" class="section about" aria-labelledby="about-title">
-    <div class="wrap about__grid">
-      <div>
-        <h2 id="about-title" class="display section__title">{about.title}</h2>
-        <p class="about__tagline">{about.tagline}</p>
-      </div>
-      <div class="about__body">
-        {about.body.map((p) => <p>{p}</p>)}
-      </div>
-    </div>
-  </section>
-
-  <section id="services" class="section services" aria-labelledby="services-title">
-    <div class="wrap">
-      <h2 id="services-title" class="display section__title">{services.title}</h2>
-      <div class="services__intro">
-        <p class="statement">{services.statement}</p>
-        <p>{services.body}</p>
-      </div>
-      <div class="services__lists">
-        <div>
-          <h3 class="display list-title">Industries</h3>
-          <ul class="plain-list">
-            {services.industries.map((item) => <li>{item}</li>)}
-          </ul>
+  <section class="band band--green" aria-labelledby="hero-title">
+    <div class="wrap split">
+      <div class="hero__copy">
+        <p class="eyebrow">{hero.kicker}</p>
+        <h1 id="hero-title" class="display hero__title">{hero.headline}</h1>
+        <p class="lead hero__lead">{hero.lead}</p>
+        <div class="hero__actions">
+          <a class="btn arrow" href={hero.primary.href}>{hero.primary.label}</a>
+          <a class="text-link" href={hero.secondary.href}>{hero.secondary.label}</a>
         </div>
-        <div>
-          <h3 class="display list-title">Expertise</h3>
-          <ul class="plain-list">
-            {services.expertise.map((item) => <li>{item}</li>)}
-          </ul>
+      </div>
+      <div class="hero__art">
+        <img src={hero.art.before.src} alt={hero.art.before.alt} width="720" height="720" fetchpriority="high" />
+        <svg width="28" height="40" viewBox="0 0 28 40" aria-hidden="true"><path d="M14 2 V36 M3 25 L14 36 L25 25" fill="none" stroke="#F3EFE6" stroke-width="4"></path></svg>
+        <img src={hero.art.after.src} alt={hero.art.after.alt} width="720" height="720" />
+      </div>
+    </div>
+  </section>
+
+  <section id="exhibits" class="band" aria-labelledby="exhibit-1-title">
+    <div class="wrap exhibit-001">
+      <div class="exhibit__intro">
+        <p class="eyebrow">{exhibits.kicker}</p>
+        <div class="exhibit__head">
+          <p class="display exhibit__number" aria-hidden="true">{exhibits.one.number}</p>
+          <h2 id="exhibit-1-title" class="display exhibit__title">{exhibits.one.title}</h2>
+        </div>
+      </div>
+      <div class="exhibit-001__body">
+        <div class="exhibit-001__text">
+          <p>{exhibits.one.body}</p>
+          <a class="text-link arrow" href={exhibits.one.link.href}>{exhibits.one.link.label} </a>
+        </div>
+        <div class="card" role="img" aria-label="Illustration: a decision rights checklist.">
+          <p class="card__title" aria-hidden="true">Decision rights</p>
+          <div class="card__row"><div class="card__track"><div class="card__bar" style="width: 100%"></div></div><div class="card__check"></div></div>
+          <div class="card__row"><div class="card__track"><div class="card__bar" style="width: 82%"></div></div><div class="card__check card__check--empty"></div></div>
+          <div class="card__row"><div class="card__track"><div class="card__bar" style="width: 68%"></div></div><div class="card__check"></div></div>
+        </div>
+        <div class="card" role="img" aria-label="Illustration: a 90-day transition plan in three phases.">
+          <p class="card__title" aria-hidden="true">90-day transition</p>
+          <div class="card__gantt">
+            <div class="card__bar"></div><div class="card__lane"><div class="card__span" style="left: 0; width: 33%"></div></div>
+            <div class="card__bar"></div><div class="card__lane"><div class="card__span" style="left: 33%; width: 34%"></div></div>
+            <div class="card__bar"></div><div class="card__lane"><div class="card__span" style="left: 65%; width: 35%"></div></div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="beliefs" class="section beliefs" aria-labelledby="beliefs-title">
+  <section class="band band--blue on-blue" aria-labelledby="exhibit-2-title">
+    <div class="wrap split">
+      <div class="exhibit-002">
+        <p class="display exhibit__number" aria-hidden="true">{exhibits.two.number}</p>
+        <div class="exhibit-002__copy">
+          <p class="visually-hidden">{exhibits.kicker}</p>
+          <h2 id="exhibit-2-title" class="display exhibit__title">{exhibits.two.title}</h2>
+          <p>{exhibits.two.body}</p>
+          <a class="btn btn--light arrow" href={exhibits.two.link.href}>{exhibits.two.link.label}</a>
+        </div>
+      </div>
+      <div class="exhibit-002__art">
+        <img src={exhibits.two.art.src} alt={exhibits.two.art.alt} width="860" height="650" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <section id="beliefs" class="band" aria-labelledby="beliefs-title">
     <div class="wrap">
-      <h2 id="beliefs-title" class="display section__title">Beliefs</h2>
+      <div class="beliefs__head">
+        <p class="eyebrow">{beliefsIntro.kicker}</p>
+        <h2 id="beliefs-title" class="display beliefs__title">{beliefsIntro.title}</h2>
+      </div>
       <ol class="beliefs__list">
         {beliefs.map((b, i) => (
           <li class="belief">
-            <span class="belief__num" aria-hidden="true">{i + 1} /</span>
-            <h3 class="belief__title">{b.title}</h3>
+            <span class="belief__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="display belief__title">{b.title}</h3>
             <p class="belief__body">{b.body}</p>
           </li>
         ))}
@@ -101,37 +96,71 @@ const contactRidges = ridges({
     </div>
   </section>
 
-  <section id="core" class="section core" aria-labelledby="core-title">
+  <section id="collective" class="band collective" aria-labelledby="collective-title">
     <div class="wrap">
-      <h2 id="core-title" class="display section__title">Core</h2>
-      <ul class="core__grid">
+      <div class="collective__head">
+        <p class="eyebrow">{collective.kicker}</p>
+        <h2 id="collective-title" class="display collective__title">{collective.title}</h2>
+        <p>{collective.lead}</p>
+      </div>
+      <ul class="people">
         {core.map((person) => (
           <li class="person">
-            <div class="person__frame">
-              <img src={person.photo} alt={`Portrait of ${person.name}`} width="480" height="480" loading="lazy" decoding="async" />
+            <img src={person.photo} alt={`Portrait of ${person.name}`} width="800" height="1000" loading="lazy" decoding="async" />
+            <div>
+              <h3 class="display person__name">
+                <a href={person.linkedin} rel="noopener" target="_blank">{person.name}<span class="visually-hidden"> on LinkedIn (opens in a new tab)</span></a>
+              </h3>
+              <p class="person__role">{person.role} /<br />{person.focus}</p>
             </div>
-            <a class="person__name" href={person.linkedin} rel="noopener" target="_blank">
-              {person.name}
-              <span class="visually-hidden"> on LinkedIn</span>
-            </a>
-            <p class="person__role">{person.role}</p>
-            <p class="person__bio">{person.bio}</p>
           </li>
         ))}
       </ul>
+      <p class="collective__motto">{collective.motto}</p>
     </div>
   </section>
 
-  <section id="contact" class="section contact" aria-labelledby="contact-title">
-    <div class="wrap contact__grid">
-      <div>
-        <h2 id="contact-title" class="display section__title">Contact</h2>
-        <p class="contact__email">Or email us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+  <section id="podcast" class="band band--night on-dark" aria-labelledby="podcast-title">
+    <div class="wrap listening">
+      <p class="eyebrow">The listening room</p>
+      <div class="split">
+        <img
+          class="listening__cover"
+          src={show.cover.src}
+          srcset={`${show.cover.srcSmall} 600w, ${show.cover.src} 1200w`}
+          sizes="(max-width: 760px) 80vw, 340px"
+          alt={show.cover.alt}
+          width="1200"
+          height="1200"
+          loading="lazy"
+        />
+        <div class="listening__copy">
+          <div>
+            <h2 id="podcast-title" class="display listening__title">{show.title}.</h2>
+            <p class="tagline">{show.tagline}</p>
+          </div>
+          {latest && (
+            <a class="episode-link" href={`/podcast/${latest.slug}`}>
+              <span class="play"><PlayIcon /></span>
+              <span>{latest.title}</span>
+            </a>
+          )}
+          <div class="listen-row">
+            <a class="btn btn--yellow arrow" href="/podcast">Listen to the podcast</a>
+            <ListenLinks />
+          </div>
+        </div>
       </div>
-      <ContactForm />
     </div>
-    <svg class="contact__ridges" viewBox="0 0 1600 320" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      {contactRidges.map((r) => <path d={r.d} fill={r.fill} />)}
-    </svg>
+  </section>
+
+  <section id="contact" class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title" class="display closing__title">{closing.title}</h2>
+      <div class="closing__actions">
+        <a class="closing__email" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <a class="btn arrow" href={closing.button.href}>{closing.button.label}</a>
+      </div>
+    </div>
   </section>
 </Base>

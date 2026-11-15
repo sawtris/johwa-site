@@ -3,14 +3,13 @@
 Astro site (static) with a small Cloudflare Worker for the contact form. Replaces the Wix site.
 
 ```
-src/content.ts   all site copy (edit words here)
+src/content.ts   home and contact page copy (edit words here)
 src/podcast.ts   podcast copy and the episode list
-src/config.ts    site facts (email, LinkedIn, search verification tags)
-src/pages/       home, privacy, 404
-src/components/  header, footer, contact form, logo mark, 조화 outlines
-src/lib/ridges.ts  draws the mountain ridgelines
-worker/          contact form handler (runs only for /api/*)
-public/          headshots, favicon, share image
+src/config.ts    site facts (email, LinkedIn links, search verification tags)
+src/pages/       home, podcast, contact, privacy, 404
+src/components/  header, footer, logo, contact form, listen links, call-to-action band
+worker/          www redirect, podcast short links, contact form handler
+public/          fonts, headshots, illustrations, podcast cover, favicon, share image
 ```
 
 ## Run it locally (optional)
@@ -80,9 +79,10 @@ Before starting, open Wix, Domains, johwa.co, DNS records, and screenshot every 
 
 ## Design notes
 
-- **Colors:** Mist `#EEF4F3`, Haze `#D6E7E4`, Tide `#7AA6A1`, Deep `#3C6B67`, Ink `#13272B`, and johwa green `#18BB65` (the logo only, plus focus rings and the belief numbers). Tokens are at the top of `src/styles/global.css`.
-- **Type:** Syncopate Bold for headings (an open-source stand-in for Lulo Clean on the Wix site) and Figtree for text (in place of Avenir).
-- **Logo:** `Mark.astro` redraws the J on its own grid, measured from the Wix logo file.
-- **조화:** drawn as outlines from Noto Serif KR ExtraLight (SIL Open Font License), so no Korean font is loaded.
-- **Motion:** the ridges rise out of the mist once on load. Switched off for visitors who prefer reduced motion.
-- **Photos:** the Wix stock photos (climber, mountains, sea, canyon) are not carried over, since Wix licenses them for use on Wix only. The mountains are drawn in code instead.
+November 2026 redesign: "The Museum of Unfinished Futures". The source files live in the johwa Brand folder (Logo, Font, Website).
+
+- **Colors:** johwa green `#18B76A`, johwa blue `#304BDA`, ivory `#F3EFE6`, ink `#141614`, and podcast yellow `#E9CF38` (the podcast sections only). A deeper green `#0F9D58` is used for numbers on ivory so they stay readable. Tokens are at the top of `src/styles/global.css`.
+- **Type:** Anton for headlines and big numbers (self-hosted in `public/fonts`, SIL Open Font License, licence file alongside), Figtree for everything else.
+- **Logo:** `Logo.astro` draws the outlined logo from the brand pack in the current text color. `variant="mark"` gives the mark alone.
+- **Illustrations:** the vector artwork from Brand/Website/johwa-illustration-artwork, in `public/images/illustrations`. The two exhibit 001 cards are built in HTML and CSS, so they stay sharp.
+- **Contact form:** name, work email, message (required), plus company, role and a challenge choice (optional). The spam trap field is `website`.

@@ -1,5 +1,5 @@
 ---
-// "Listen on" buttons. Each one shows only once its link is filled in src/podcast.ts.
+// "Listen on" links. Each one shows only once its link is filled in src/podcast.ts.
 import { show } from '../podcast';
 
 const links = [
@@ -12,7 +12,7 @@ const links = [
   <ul class="listen" aria-label="Listen on">
     {links.map((link) => (
       <li>
-        <a class="btn btn--ghost" href={link.href} rel="noopener" target="_blank">
+        <a href={link.href} rel="noopener" target="_blank">
           {link.label}
           <span class="visually-hidden"> (opens in a new tab)</span>
         </a>

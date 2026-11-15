@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { contactPage } from '../content';
+import { show } from '../podcast';
+import { SITE } from '../config';
+---
+
+<Base title="Contact | johwa" description="Tell johwa what needs to change in your business. We listen first, and we'll tell you straight whether we can help.">
+  <section class="band" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="contact-hero">
+        <p class="eyebrow">{contactPage.kicker}</p>
+        <h1 id="contact-title" class="display contact-hero__title">{contactPage.title}</h1>
+        <p class="lead">{contactPage.lead}</p>
+      </div>
+      <div class="contact-grid">
+        <ContactForm />
+        <aside class="contact-aside" aria-label="Other ways to reach us">
+          <div class="contact-aside__email">
+            <p class="eyebrow">Prefer email?</p>
+            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </div>
+          <div class="contact-aside__belief">
+            <p class="display">{contactPage.belief.title}</p>
+            <p>{contactPage.belief.body}</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--night on-dark podcast-band" aria-labelledby="podcast-band-title">
+    <div class="wrap split">
+      <img class="podcast-band__cover" src={show.cover.srcSmall} alt="" width="600" height="600" loading="lazy" />
+      <div class="podcast-band__copy">
+        <p class="eyebrow">{contactPage.podcast.kicker}</p>
+        <h2 id="podcast-band-title" class="display podcast-band__title">{contactPage.podcast.title}</h2>
+        <p>{show.tagline}</p>
+      </div>
+      <a class="btn btn--yellow arrow" href="/podcast">Listen to the podcast</a>
+    </div>
+  </section>
+</Base>

@@ -36,12 +36,12 @@ export const show = {
     apple: 'https://podcasts.apple.com/podcast/id6832157937',
     spotify: 'https://open.spotify.com/show/31wHVYBbLzfYYCKxqKfDf2',
   },
-  // The note under each episode, pointing listeners to johwa.
+  // The green band at the end of the podcast and episode pages, pointing listeners to johwa.
   cta: {
-    title: 'Want this working in your business?',
-    body: "We help leadership teams put AI to work on real problems. Tell us what you're trying to fix.",
-    button: 'Talk to us',
-    href: '/#contact',
+    kicker: 'Heard something that hit home?',
+    title: 'Put it to work in your business.',
+    button: 'Talk through your challenge',
+    href: '/contact',
   },
 };
 
