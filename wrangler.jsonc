@@ -16,5 +16,13 @@
     // Until johwa.co is verified in Resend, use onboarding@resend.dev here (see README).
     "CONTACT_FROM_EMAIL": "johwa Website <website@johwa.co>"
   },
+  // Settings for preview builds of branches and pull requests (npx wrangler preview).
+  // Preview test messages from the contact form go to the same inbox as the live site.
+  "previews": {
+    "vars": {
+      "CONTACT_TO_EMAIL": "hello@johwa.co",
+      "CONTACT_FROM_EMAIL": "johwa Website <website@johwa.co>"
+    }
+  },
   "observability": { "enabled": true }
 }
